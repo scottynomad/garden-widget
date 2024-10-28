@@ -13,7 +13,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthrough": true,
     "noImplicitReturns": true,
     "types": ["vite/client"]
   },

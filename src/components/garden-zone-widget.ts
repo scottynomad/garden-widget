@@ -391,7 +391,16 @@ class GardenZoneWidget extends HTMLElement {
     const container = this.shadowRoot?.querySelector('.widget-container');
     if (!container) return;
 
-    const seasonalGroups = {
+    interface SeasonalGroups {
+      [season: string]: {
+        title: string;
+        groups: {
+          [groupName: string]: string[];
+        };
+      };
+    }
+
+    const seasonalGroups: SeasonalGroups = {
       early: {
         title: 'Early Season',
         groups: {
