@@ -101,17 +101,22 @@ class MockGardenDataService {
     // Create base dates
     const lastFrost = new Date(currentYear, dates.lastFrost[0] - 1, dates.lastFrost[1]);
     const firstFrost = new Date(currentYear, dates.firstFrost[0] - 1, dates.firstFrost[1]);
-  
+ 
+    const typicalLastFrost = addDays(lastFrost, -dates.lastFrostRange[0]);
+    const typicalFirstFrost = addDays(firstFrost, -dates.firstFrostRange[0]);
+
     return Promise.resolve({
       lastFrost,
       firstFrost,
       lastFrostRange: {
         earliest: addDays(lastFrost, -dates.lastFrostRange[0]),
-        latest: addDays(lastFrost, dates.lastFrostRange[1])
+        latest: addDays(lastFrost, dates.lastFrostRange[1]),
+        typical: typicalLastFrost
       },
       firstFrostRange: {
         earliest: addDays(firstFrost, -dates.firstFrostRange[0]),
-        latest: addDays(firstFrost, dates.firstFrostRange[1])
+        latest: addDays(firstFrost, dates.firstFrostRange[1]),
+        typical: typicalFirstFrost
       },
       source: 'https://www.noaa.gov/frost-dates'
     });

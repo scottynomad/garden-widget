@@ -165,6 +165,12 @@ class GardenZoneWidget extends HTMLElement {
         padding-left: 1.2rem;
         font-size: 0.85rem;
       }
+
+      .frost-dates {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
     `;
 
     if (!this.shadowRoot) return;
@@ -186,15 +192,6 @@ class GardenZoneWidget extends HTMLElement {
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     chartContainer.appendChild(canvas);
-
-    // Debug canvas dimensions
-    console.log('Canvas dimensions:', {
-      width: canvas.width,
-      height: canvas.height,
-      offsetWidth: canvas.offsetWidth,
-      offsetHeight: canvas.offsetHeight
-    });
-
 
     // Wait for next frame
     await new Promise(resolve => requestAnimationFrame(resolve));
@@ -221,23 +218,20 @@ class GardenZoneWidget extends HTMLElement {
         options: {
           responsive: false,
           maintainAspectRatio: true,
-
           scales: {
             y: {
               beginAtZero: true,
               ticks: {
-                font: {
-                  size: 10
-                }
+                font: { size: 10 }
               }
             },
             x: {
               ticks: {
-                font: {
-                  size: 10
-                }
+                font: { size: 10 }
               }
             }
+          },
+          plugins: {
           }
         }
       });
@@ -261,34 +255,34 @@ class GardenZoneWidget extends HTMLElement {
     chartContainer.className = 'frost-chart-container';
     chartContainer.style.width = '100%';
     chartContainer.style.height = '60px';
-    
+
     const canvas = document.createElement('canvas');
     canvas.width = 400;
     canvas.height = 60;
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     chartContainer.appendChild(canvas);
-  
+
     const ctx = canvas.getContext('2d');
     if (!ctx) return chartContainer;
- 
-  // Helper to convert date string to days since start of year
-  const dateToDays = (date: Date) => {
-    return Math.floor((date.getTime() - new Date("2024-01-01").getTime()) / (1000 * 60 * 60 * 24));
-  };
 
-  // Calculate days for each boundary
-  const lastFrostEarliestDays = dateToDays(frostDates.lastFrostRange.earliest);
-  const lastFrostLatestDays = dateToDays(frostDates.lastFrostRange.latest);
-  const firstFrostEarliestDays = dateToDays(frostDates.firstFrostRange.earliest);
-  const firstFrostLatestDays = dateToDays(frostDates.firstFrostRange.latest);
+    // Helper to convert date string to days since start of year
+    const dateToDays = (date: Date) => {
+      return Math.floor((date.getTime() - new Date("2024-01-01").getTime()) / (1000 * 60 * 60 * 24));
+    };
 
-  // Calculate segment lengths in days
-  const beforeLastFrost = lastFrostEarliestDays;
-  const lastFrostRange = lastFrostLatestDays - lastFrostEarliestDays;
-  const growingSeason = firstFrostEarliestDays - lastFrostLatestDays;
-  const firstFrostRange = firstFrostLatestDays - firstFrostEarliestDays;
-  const afterFirstFrost = 366 - firstFrostLatestDays; // Use 366 for leap year
+    // Calculate days for each boundary
+    const lastFrostEarliestDays = dateToDays(frostDates.lastFrostRange.earliest);
+    const lastFrostLatestDays = dateToDays(frostDates.lastFrostRange.latest);
+    const firstFrostEarliestDays = dateToDays(frostDates.firstFrostRange.earliest);
+    const firstFrostLatestDays = dateToDays(frostDates.firstFrostRange.latest);
+
+    // Calculate segment lengths in days
+    const beforeLastFrost = lastFrostEarliestDays;
+    const lastFrostRange = lastFrostLatestDays - lastFrostEarliestDays;
+    const growingSeason = firstFrostEarliestDays - lastFrostLatestDays;
+    const firstFrostRange = firstFrostLatestDays - firstFrostEarliestDays;
+    const afterFirstFrost = 366 - firstFrostLatestDays; // Use 366 for leap year
 
     new Chart(ctx, {
       type: 'bar',
@@ -347,7 +341,7 @@ class GardenZoneWidget extends HTMLElement {
               display: false
             },
             ticks: {
-              callback: function(value: any) {
+              callback: function (value: any) {
                 // Convert days back to month names
                 const date = new Date("2024-01-01");
                 date.setDate(date.getDate() + value);
@@ -369,25 +363,25 @@ class GardenZoneWidget extends HTMLElement {
         }
       }
     });
-  
+
     return chartContainer;
   }
 
-  async updateDisplay(frostDates: FrostDates, 
-  hardiness: {
-    zone: string;
-    source: string;
-  }, rainfall: {
-    data: Array<{ month: string; amount: number }>;
-    source: string;
-  }, soilData: {
-    classification: string;
-    description?: string;
-    source: string;
-  }, crops: {
-    crops: string[];
-    source: string;
-  }) {
+  async updateDisplay(frostDates: FrostDates,
+    hardiness: {
+      zone: string;
+      source: string;
+    }, rainfall: {
+      data: Array<{ month: string; amount: number }>;
+      source: string;
+    }, soilData: {
+      classification: string;
+      description?: string;
+      source: string;
+    }, crops: {
+      crops: string[];
+      source: string;
+    }) {
     const container = this.shadowRoot?.querySelector('.widget-container');
     if (!container) return;
 
@@ -442,6 +436,13 @@ class GardenZoneWidget extends HTMLElement {
       }
     });
 
+    const formatDate = (date: Date) => {
+      return date.toLocaleDateString('en-US', { 
+        month: 'long', 
+        day: 'numeric' 
+      });
+    };
+
     const cropsSection = `
     <div class="data-section crops-section">
       <h3>Recommended Crops</h3>
@@ -475,6 +476,10 @@ class GardenZoneWidget extends HTMLElement {
       <div class="data-section">
         <h3>Growing Season</h3>
         <div class="frost-chart-container"></div>
+        <p class="frost-dates">
+          Typical Last Frost: ${formatDate(frostDates.lastFrostRange.typical)}<br>
+          Typical First Frost: ${formatDate(frostDates.firstFrostRange.typical)}
+        </p>
         <a href="${frostDates.source}" class="source-link">NOAA Data</a>
       </div>
 

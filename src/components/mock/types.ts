@@ -1,8 +1,8 @@
 export interface FrostDates {
   firstFrost: Date;
   lastFrost: Date;
-  firstFrostRange: { earliest: Date; latest: Date };
-  lastFrostRange: { earliest: Date; latest: Date };
+  firstFrostRange: { earliest: Date; latest: Date, typical: Date };
+  lastFrostRange: { earliest: Date; latest: Date, typical: Date };
   source: string;
 }
 
