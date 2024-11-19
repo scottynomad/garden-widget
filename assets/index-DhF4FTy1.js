@@ -1,4 +1,4 @@
-(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const n of document.querySelectorAll('link[rel="modulepreload"]'))s(n);new MutationObserver(n=>{for(const o of n)if(o.type==="childList")for(const a of o.addedNodes)a.tagName==="LINK"&&a.rel==="modulepreload"&&s(a)}).observe(document,{childList:!0,subtree:!0});function e(n){const o={};return n.integrity&&(o.integrity=n.integrity),n.referrerPolicy&&(o.referrerPolicy=n.referrerPolicy),n.crossOrigin==="use-credentials"?o.credentials="include":n.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function s(n){if(n.ep)return;n.ep=!0;const o=e(n);fetch(n.href,o)}})();const xe=i=>new Promise(t=>setTimeout(t,i));class Xt{static HARDINESS_ZONES={"25,-80":"10b","40,-74":"7a","34,-118":"10a","47,-122":"8b","41,-87":"6a"};static SOIL_TYPES={"25,-80":{classification:"Sandy Loam",description:"Well-draining soil with high organic content",source:"https://websoilsurvey.nrcs.usda.gov/"},"40,-74":{classification:"Clay Loam",description:"Rich soil with good water retention",source:"https://websoilsurvey.nrcs.usda.gov/"}};static getClosestCoordinate(t,e){return Object.keys(this.HARDINESS_ZONES).reduce((n,o)=>{const[a,r]=o.split(",").map(Number),l=Math.sqrt(Math.pow(t-a,2)+Math.pow(e-r,2));if(!n)return o;const[c,h]=n.split(",").map(Number),d=Math.sqrt(Math.pow(t-c,2)+Math.pow(e-h,2));return l<d?o:n},"")}static getFrostDates(t,e){const s=new Date().getFullYear(),n=this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",o={"10b":{lastFrost:[1,15],firstFrost:[12,15],lastFrostRange:[7,7],firstFrostRange:[7,7]},"10a":{lastFrost:[2,1],firstFrost:[12,1],lastFrostRange:[14,14],firstFrostRange:[14,14]},"8b":{lastFrost:[3,15],firstFrost:[11,15],lastFrostRange:[21,21],firstFrostRange:[21,21]},"7a":{lastFrost:[4,15],firstFrost:[10,15],lastFrostRange:[30,30],firstFrostRange:[30,30]},"6a":{lastFrost:[5,1],firstFrost:[10,1],lastFrostRange:[30,30],firstFrostRange:[30,30]}},a=o[n]||o["7a"],r=(h,d)=>{const u=new Date(h);return u.setDate(u.getDate()+d),u},l=new Date(s,a.lastFrost[0]-1,a.lastFrost[1]),c=new Date(s,a.firstFrost[0]-1,a.firstFrost[1]);return Promise.resolve({lastFrost:l,firstFrost:c,lastFrostRange:{earliest:r(l,-a.lastFrostRange[0]),latest:r(l,a.lastFrostRange[1])},firstFrostRange:{earliest:r(c,-a.firstFrostRange[0]),latest:r(c,a.firstFrostRange[1])},source:"https://www.noaa.gov/frost-dates"})}static async getHardinessZone(t,e){return await xe(600),{zone:this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",source:"https://planthardiness.ars.usda.gov/"}}static async getRainfallData(t,e){await xe(1e3);const s={"10b":[2.2,2.1,2.6,3.4,5.5,8.5,6.5,8.2,8.4,6.3,3.4,2.2],"10a":[3.1,3.8,2.5,.9,.3,.1,0,.1,.2,.4,1.2,2.3],"8b":[5.6,3.5,3.7,2.7,2,1.5,.7,.9,1.6,3.5,6.1,5.6],"7a":[3.6,3,4,4.1,4,3.8,4.6,4.1,3.7,3.5,3.4,3.5],"6a":[1.8,1.8,2.5,3.4,3.7,3.8,3.7,3.5,3.3,2.7,2.8,2.2]},n=this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",o=s[n]||s["7a"];return{data:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((l,c)=>({month:l,amount:+(o[c]*(.85+Math.random()*.3)).toFixed(1)})),source:"https://www.weather.gov/"}}static async getSoilData(t,e){return await xe(700),this.SOIL_TYPES[this.getClosestCoordinate(t,e)]||{classification:"Loam",description:"Medium-textured soil with balanced properties",source:"https://websoilsurvey.nrcs.usda.gov/"}}static async getRecommendedCrops(t,e){await xe(900);const s=this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",n=parseInt(s);return{crops:["Tomatoes","Peppers","Lettuce","Beans",...n>=8?["Citrus","Avocado"]:[],...n<=7?["Potatoes","Cabbage"]:[],"Herbs","Cucumbers","Squash"],source:"https://extension.org/"}}}/*!
+(function(){const t=document.createElement("link").relList;if(t&&t.supports&&t.supports("modulepreload"))return;for(const n of document.querySelectorAll('link[rel="modulepreload"]'))s(n);new MutationObserver(n=>{for(const o of n)if(o.type==="childList")for(const a of o.addedNodes)a.tagName==="LINK"&&a.rel==="modulepreload"&&s(a)}).observe(document,{childList:!0,subtree:!0});function e(n){const o={};return n.integrity&&(o.integrity=n.integrity),n.referrerPolicy&&(o.referrerPolicy=n.referrerPolicy),n.crossOrigin==="use-credentials"?o.credentials="include":n.crossOrigin==="anonymous"?o.credentials="omit":o.credentials="same-origin",o}function s(n){if(n.ep)return;n.ep=!0;const o=e(n);fetch(n.href,o)}})();const xe=i=>new Promise(t=>setTimeout(t,i));class Xt{static HARDINESS_ZONES={"25,-80":"10b","40,-74":"7a","34,-118":"10a","47,-122":"8b","41,-87":"6a"};static SOIL_TYPES={"25,-80":{classification:"Sandy Loam",description:"Well-draining soil with high organic content",source:"https://websoilsurvey.nrcs.usda.gov/"},"40,-74":{classification:"Clay Loam",description:"Rich soil with good water retention",source:"https://websoilsurvey.nrcs.usda.gov/"}};static getClosestCoordinate(t,e){return Object.keys(this.HARDINESS_ZONES).reduce((n,o)=>{const[a,r]=o.split(",").map(Number),l=Math.sqrt(Math.pow(t-a,2)+Math.pow(e-r,2));if(!n)return o;const[c,h]=n.split(",").map(Number),d=Math.sqrt(Math.pow(t-c,2)+Math.pow(e-h,2));return l<d?o:n},"")}static getFrostDates(t,e){const s=new Date().getFullYear(),n=this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",o={"10b":{lastFrost:[1,15],firstFrost:[12,15],lastFrostRange:[7,7],firstFrostRange:[7,7]},"10a":{lastFrost:[2,1],firstFrost:[12,1],lastFrostRange:[14,14],firstFrostRange:[14,14]},"8b":{lastFrost:[3,15],firstFrost:[11,15],lastFrostRange:[21,21],firstFrostRange:[21,21]},"7a":{lastFrost:[4,15],firstFrost:[10,15],lastFrostRange:[30,30],firstFrostRange:[30,30]},"6a":{lastFrost:[5,1],firstFrost:[10,1],lastFrostRange:[30,30],firstFrostRange:[30,30]}},a=o[n]||o["7a"],r=(u,f)=>{const g=new Date(u);return g.setDate(g.getDate()+f),g},l=new Date(s,a.lastFrost[0]-1,a.lastFrost[1]),c=new Date(s,a.firstFrost[0]-1,a.firstFrost[1]),h=r(l,-a.lastFrostRange[0]),d=r(c,-a.firstFrostRange[0]);return Promise.resolve({lastFrost:l,firstFrost:c,lastFrostRange:{earliest:r(l,-a.lastFrostRange[0]),latest:r(l,a.lastFrostRange[1]),typical:h},firstFrostRange:{earliest:r(c,-a.firstFrostRange[0]),latest:r(c,a.firstFrostRange[1]),typical:d},source:"https://www.noaa.gov/frost-dates"})}static async getHardinessZone(t,e){return await xe(600),{zone:this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",source:"https://planthardiness.ars.usda.gov/"}}static async getRainfallData(t,e){await xe(1e3);const s={"10b":[2.2,2.1,2.6,3.4,5.5,8.5,6.5,8.2,8.4,6.3,3.4,2.2],"10a":[3.1,3.8,2.5,.9,.3,.1,0,.1,.2,.4,1.2,2.3],"8b":[5.6,3.5,3.7,2.7,2,1.5,.7,.9,1.6,3.5,6.1,5.6],"7a":[3.6,3,4,4.1,4,3.8,4.6,4.1,3.7,3.5,3.4,3.5],"6a":[1.8,1.8,2.5,3.4,3.7,3.8,3.7,3.5,3.3,2.7,2.8,2.2]},n=this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",o=s[n]||s["7a"];return{data:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"].map((l,c)=>({month:l,amount:+(o[c]*(.85+Math.random()*.3)).toFixed(1)})),source:"https://www.weather.gov/"}}static async getSoilData(t,e){return await xe(700),this.SOIL_TYPES[this.getClosestCoordinate(t,e)]||{classification:"Loam",description:"Medium-textured soil with balanced properties",source:"https://websoilsurvey.nrcs.usda.gov/"}}static async getRecommendedCrops(t,e){await xe(900);const s=this.HARDINESS_ZONES[this.getClosestCoordinate(t,e)]||"7a",n=parseInt(s);return{crops:["Tomatoes","Peppers","Lettuce","Beans",...n>=8?["Citrus","Avocado"]:[],...n<=7?["Potatoes","Cabbage"]:[],"Herbs","Cucumbers","Squash"],source:"https://extension.org/"}}}/*!
  * @kurkle/color v0.3.2
  * https://github.com/kurkle/color#readme
  * (c) 2023 Jukka Kurkela
@@ -21,7 +21,7 @@
         padding: 0.5rem;
         background: white;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px #0C5D2E;
         margin: 0.5rem;
         font-family: system-ui, sans-serif;
         font-size: 0.9rem;
@@ -41,14 +41,14 @@
       }
 
       .data-section h3 {
-        color: #2c5282;
+        color: #0C5D2E;
         margin: 0 0 0.25rem 0;
         font-size: 1rem;
       }
 
       .source-link {
         font-size: 0.7rem;
-        color: #4299e1;
+        color: #0C5D2E;
         text-decoration: none;
         display: block;
         margin-top: 0.25rem;
@@ -81,7 +81,7 @@
       }
 
       .season-column h4 {
-        color: #2c5282;
+        color: #0C5D2E;
         margin: 0 0 0.5rem 0;
         font-size: 0.9rem;
         font-weight: 600;
@@ -94,7 +94,7 @@
       }
 
       .planting-group h5 {
-        color: #4a5568;
+        color: #0C5D2E;
         margin: 0 0 0.25rem 0;
         font-size: 0.85rem;
         font-weight: 600;
@@ -105,24 +105,30 @@
         padding-left: 1.2rem;
         font-size: 0.85rem;
       }
+
+      .frost-dates {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+      }
     `;this.shadowRoot&&(this.shadowRoot.innerHTML=`
       <style>${t}</style>
       <div class="widget-container">
         <h2>Garden Zone Information</h2>
         <div class="loading">Loading gardening data...</div>
       </div>
-    `)}async renderRainfallChart(t){const e=document.createElement("div");e.className="chart-container";const s=document.createElement("canvas");s.style.width="100%",s.style.height="100%",e.appendChild(s),console.log("Canvas dimensions:",{width:s.width,height:s.height,offsetWidth:s.offsetWidth,offsetHeight:s.offsetHeight}),await new Promise(o=>requestAnimationFrame(o));const n=s.getContext("2d");if(!n)return console.error("Failed to get canvas context"),e;try{this.rainfallChart=new Wt(n,{type:"bar",data:{labels:t.map(o=>o.month),datasets:[{label:"Rainfall (inches)",data:t.map(o=>o.amount),backgroundColor:"rgba(66, 153, 225, 0.6)",borderColor:"rgb(49, 130, 206)",borderWidth:1}]},options:{responsive:!1,maintainAspectRatio:!0,scales:{y:{beginAtZero:!0,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}}}}),console.log("Chart created successfully:",this.rainfallChart)}catch(o){console.error("Error creating chart:",o),console.error("Error details:",{error:o,Chart:typeof Wt,canvas:s,context:n,data:t})}return e}async renderFrostChart(t){const e=document.createElement("div");e.className="frost-chart-container",e.style.width="100%",e.style.height="60px";const s=document.createElement("canvas");s.width=400,s.height=60,s.style.width="100%",s.style.height="100%",e.appendChild(s);const n=s.getContext("2d");if(!n)return e;const o=p=>Math.floor((p.getTime()-new Date("2024-01-01").getTime())/(1e3*60*60*24)),a=o(t.lastFrostRange.earliest),r=o(t.lastFrostRange.latest),l=o(t.firstFrostRange.earliest),c=o(t.firstFrostRange.latest),h=a,d=r-a,u=l-r,f=c-l,g=366-c;return new Wt(n,{type:"bar",data:{labels:["Growing Season"],datasets:[{data:[h],backgroundColor:"rgba(203, 213, 224, 0.3)",barPercentage:.3},{data:[d],backgroundColor:"rgba(147, 197, 253, 0.8)",barPercentage:.3},{data:[u],backgroundColor:"rgba(72, 187, 120, 0.2)",barPercentage:.3},{data:[f],backgroundColor:"rgba(147, 197, 253, 0.8)",barPercentage:.3},{data:[g],backgroundColor:"rgba(203, 213, 224, 0.3)",barPercentage:.3}]},options:{indexAxis:"y",responsive:!1,maintainAspectRatio:!1,plugins:{legend:{display:!1},tooltip:{enabled:!1}},scales:{x:{stacked:!0,display:!0,grid:{display:!1},ticks:{callback:function(p){const m=new Date("2024-01-01");return m.setDate(m.getDate()+p),["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m.getMonth()]},font:{size:10}}},y:{stacked:!0,display:!1,grid:{display:!1}}}}}),e}async updateDisplay(t,e,s,n,o){const a=this.shadowRoot?.querySelector(".widget-container");if(!a)return;const r={early:{title:"Early Season",groups:{"Start Indoors (Early Spring)":[],"Direct Seed (Spring)":[]}},mid:{title:"Mid Season",groups:{"Start Indoors (Late Spring)":[],"Direct Seed (Summer)":[]}},late:{title:"Late Season",groups:{"Start Indoors (Summer)":[],"Direct Seed (Fall)":[]}}};o.crops.forEach(d=>{d.includes("Tomato")||d.includes("Pepper")||d.includes("Eggplant")?r.early.groups["Start Indoors (Early Spring)"].push(d):d.includes("Pea")||d.includes("Spinach")||d.includes("Lettuce")?r.early.groups["Direct Seed (Spring)"].push(d):d.includes("Melon")||d.includes("Squash")?r.mid.groups["Start Indoors (Late Spring)"].push(d):d.includes("Bean")||d.includes("Corn")?r.mid.groups["Direct Seed (Summer)"].push(d):d.includes("Broccoli")||d.includes("Cabbage")?r.late.groups["Start Indoors (Summer)"].push(d):r.late.groups["Direct Seed (Fall)"].push(d)});const l=`
+    `)}async renderRainfallChart(t){const e=document.createElement("div");e.className="chart-container";const s=document.createElement("canvas");s.style.width="100%",s.style.height="100%",e.appendChild(s),await new Promise(o=>requestAnimationFrame(o));const n=s.getContext("2d");if(!n)return console.error("Failed to get canvas context"),e;try{this.rainfallChart=new Wt(n,{type:"bar",data:{labels:t.map(o=>o.month),datasets:[{label:"Rainfall (inches)",data:t.map(o=>o.amount),backgroundColor:"#309C5A",borderColor:"#0C5D2E",borderWidth:1}]},options:{responsive:!1,maintainAspectRatio:!0,scales:{y:{beginAtZero:!0,ticks:{font:{size:10}}},x:{ticks:{font:{size:10}}}},plugins:{}}}),console.log("Chart created successfully:",this.rainfallChart)}catch(o){console.error("Error creating chart:",o),console.error("Error details:",{error:o,Chart:typeof Wt,canvas:s,context:n,data:t})}return e}async renderFrostChart(t){const e=document.createElement("div");e.className="frost-chart-container",e.style.width="100%",e.style.height="60px";const s=document.createElement("canvas");s.width=400,s.height=60,s.style.width="100%",s.style.height="100%",e.appendChild(s);const n=s.getContext("2d");if(!n)return e;const o=p=>Math.floor((p.getTime()-new Date("2024-01-01").getTime())/(1e3*60*60*24)),a=o(t.lastFrostRange.earliest),r=o(t.lastFrostRange.latest),l=o(t.firstFrostRange.earliest),c=o(t.firstFrostRange.latest),h=a,d=r-a,u=l-r,f=c-l,g=366-c;return new Wt(n,{type:"bar",data:{labels:["Growing Season"],datasets:[{data:[h],backgroundColor:"rgba(203, 213, 224, 0.3)",barPercentage:.3},{data:[d],backgroundColor:"#D1F4C9",barPercentage:.3},{data:[u],backgroundColor:"#309C5A",barPercentage:.3},{data:[f],backgroundColor:"#D1F4C9",barPercentage:.3},{data:[g],backgroundColor:"rgba(203, 213, 224, 0.3)",barPercentage:.3}]},options:{indexAxis:"y",responsive:!1,maintainAspectRatio:!1,plugins:{legend:{display:!1},tooltip:{enabled:!1}},scales:{x:{stacked:!0,display:!0,grid:{display:!1},ticks:{callback:function(p){const m=new Date("2024-01-01");return m.setDate(m.getDate()+p),["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][m.getMonth()]},font:{size:10}}},y:{stacked:!0,display:!1,grid:{display:!1}}}}}),e}async updateDisplay(t,e,s,n,o){const a=this.shadowRoot?.querySelector(".widget-container");if(!a)return;const r={early:{title:"Early Season",groups:{"Start Indoors (Early Spring)":[],"Direct Seed (Spring)":[]}},mid:{title:"Mid Season",groups:{"Start Indoors (Late Spring)":[],"Direct Seed (Summer)":[]}},late:{title:"Late Season",groups:{"Start Indoors (Summer)":[],"Direct Seed (Fall)":[]}}};o.crops.forEach(u=>{u.includes("Tomato")||u.includes("Pepper")||u.includes("Eggplant")?r.early.groups["Start Indoors (Early Spring)"].push(u):u.includes("Pea")||u.includes("Spinach")||u.includes("Lettuce")?r.early.groups["Direct Seed (Spring)"].push(u):u.includes("Melon")||u.includes("Squash")?r.mid.groups["Start Indoors (Late Spring)"].push(u):u.includes("Bean")||u.includes("Corn")?r.mid.groups["Direct Seed (Summer)"].push(u):u.includes("Broccoli")||u.includes("Cabbage")?r.late.groups["Start Indoors (Summer)"].push(u):r.late.groups["Direct Seed (Fall)"].push(u)});const l=u=>u.toLocaleDateString("en-US",{month:"long",day:"numeric"}),c=`
     <div class="data-section crops-section">
       <h3>Recommended Crops</h3>
       <div class="crops-grid">
-        ${Object.entries(r).map(([d,u])=>`
+        ${Object.entries(r).map(([u,f])=>`
           <div class="season-column">
-            <h4>${u.title}</h4>
-            ${Object.entries(u.groups).filter(([f,g])=>g.length>0).map(([f,g])=>`
+            <h4>${f.title}</h4>
+            ${Object.entries(f.groups).filter(([g,p])=>p.length>0).map(([g,p])=>`
                 <div class="planting-group">
-                  <h5>${f}</h5>
+                  <h5>${g}</h5>
                   <ul>
-                    ${g.map(p=>`<li>${p}</li>`).join("")}
+                    ${p.map(m=>`<li>${m}</li>`).join("")}
                   </ul>
                 </div>
               `).join("")}
@@ -139,6 +145,10 @@
       <div class="data-section">
         <h3>Growing Season</h3>
         <div class="frost-chart-container"></div>
+        <p class="frost-dates">
+          Typical Last Frost: ${l(t.lastFrostRange.typical)}<br>
+          Typical First Frost: ${l(t.firstFrostRange.typical)}
+        </p>
         <a href="${t.source}" class="source-link">NOAA Data</a>
       </div>
 
@@ -160,8 +170,8 @@
         <a href="${n.source}" class="source-link" target="_blank">Source: SSURGO</a>
       </div>
 
-      ${l}
-    `,console.log("Rainfall data:",s.data);const c=a.querySelector(".frost-chart-container");if(c){const d=await this.renderFrostChart(t);c.appendChild(d)}const h=a.querySelector(".data-section:nth-of-type(3)");if(h){const d=await this.renderRainfallChart(s.data);h.insertBefore(d,h.lastElementChild)}}disconnectedCallback(){this.rainfallChart&&(this.rainfallChart.destroy(),this.rainfallChart=null)}showError(){const t=this.shadowRoot?.querySelector(".widget-container");t&&(t.innerHTML=`
+      ${c}
+    `,console.log("Rainfall data:",s.data);const h=a.querySelector(".frost-chart-container");if(h){const u=await this.renderFrostChart(t);h.appendChild(u)}const d=a.querySelector(".data-section:nth-of-type(3)");if(d){const u=await this.renderRainfallChart(s.data);d.insertBefore(u,d.lastElementChild)}}disconnectedCallback(){this.rainfallChart&&(this.rainfallChart.destroy(),this.rainfallChart=null)}showError(){const t=this.shadowRoot?.querySelector(".widget-container");t&&(t.innerHTML=`
       <div class="error">
         Sorry, we couldn't load the gardening data. Please try again later.
       </div>
