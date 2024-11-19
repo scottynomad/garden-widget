@@ -81,7 +81,7 @@ class GardenZoneWidget extends HTMLElement {
         padding: 0.5rem;
         background: white;
         border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 4px #0C5D2E;
         margin: 0.5rem;
         font-family: system-ui, sans-serif;
         font-size: 0.9rem;
@@ -101,14 +101,14 @@ class GardenZoneWidget extends HTMLElement {
       }
 
       .data-section h3 {
-        color: #2c5282;
+        color: #0C5D2E;
         margin: 0 0 0.25rem 0;
         font-size: 1rem;
       }
 
       .source-link {
         font-size: 0.7rem;
-        color: #4299e1;
+        color: #0C5D2E;
         text-decoration: none;
         display: block;
         margin-top: 0.25rem;
@@ -141,7 +141,7 @@ class GardenZoneWidget extends HTMLElement {
       }
 
       .season-column h4 {
-        color: #2c5282;
+        color: #0C5D2E;
         margin: 0 0 0.5rem 0;
         font-size: 0.9rem;
         font-weight: 600;
@@ -154,7 +154,7 @@ class GardenZoneWidget extends HTMLElement {
       }
 
       .planting-group h5 {
-        color: #4a5568;
+        color: #0C5D2E;
         margin: 0 0 0.25rem 0;
         font-size: 0.85rem;
         font-weight: 600;
@@ -210,8 +210,8 @@ class GardenZoneWidget extends HTMLElement {
           datasets: [{
             label: 'Rainfall (inches)',
             data: rainfallData.map(d => d.amount),
-            backgroundColor: 'rgba(66, 153, 225, 0.6)',
-            borderColor: 'rgb(49, 130, 206)',
+            backgroundColor: '#309C5A',
+            borderColor: '#0C5D2E',
             borderWidth: 1
           }]
         },
@@ -298,19 +298,19 @@ class GardenZoneWidget extends HTMLElement {
           {
             // Last Frost Range
             data: [lastFrostRange],
-            backgroundColor: 'rgba(147, 197, 253, 0.8)',
+            backgroundColor: '#D1F4C9',
             barPercentage: 0.3,
           },
           {
             // Growing Season
             data: [growingSeason],
-            backgroundColor: 'rgba(72, 187, 120, 0.2)',
+            backgroundColor: '#309C5A',
             barPercentage: 0.3,
           },
           {
             // First Frost Range
             data: [firstFrostRange],
-            backgroundColor: 'rgba(147, 197, 253, 0.8)',
+            backgroundColor: '#D1F4C9',
             barPercentage: 0.3,
           },
           {
