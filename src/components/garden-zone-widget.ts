@@ -1,6 +1,6 @@
 import MockGardenDataService from './mock/mock-garden-data';
 import { Chart, registerables } from 'chart.js';
-import { FrostDates } from './mock/types';
+import { CropData, FrostDates, HardinessZone, RainfallData, SoilData } from '../types/types';
 // Register all Chart.js components we'll need
 Chart.register(...registerables);
 
@@ -9,12 +9,24 @@ console.log('Chart.js initialized:', {
   registerables: registerables
 });
 
+// Define interface for data service provider
+interface GardenDataProvider {
+  getFrostDates(lat: number, lng: number): Promise<FrostDates>;
+  getHardinessZone(lat: number, lng: number): Promise<HardinessZone>;
+  getRainfallData(lat: number, lng: number): Promise<RainfallData>;
+  getSoilData(lat: number, lng: number): Promise<SoilData>;
+  getRecommendedCrops(lat: number, lng: number): Promise<CropData>;
+}
+
 class GardenZoneWidget extends HTMLElement {
   private rainfallChart: Chart | null = null;
+  private dataProvider: GardenDataProvider;
 
-  constructor() {
+  constructor(dataProvider?: GardenDataProvider) {
     super();
     this.attachShadow({ mode: 'open' });
+    // Default to mock service if no provider specified
+    this.dataProvider = dataProvider || MockGardenDataService;
   }
 
   static get observedAttributes() {
@@ -38,13 +50,12 @@ class GardenZoneWidget extends HTMLElement {
     const lng = parseFloat(this.getAttribute('longitude') || '0');
     try {
       console.log('Loading gardening data for:', lat, lng);
-      // Using our mock service instead of real APIs
       const [frostDates, hardiness, rainfall, soilData, crops] = await Promise.all([
-        MockGardenDataService.getFrostDates(lat, lng),
-        MockGardenDataService.getHardinessZone(lat, lng),
-        MockGardenDataService.getRainfallData(lat, lng),
-        MockGardenDataService.getSoilData(lat, lng),
-        MockGardenDataService.getRecommendedCrops(lat, lng)
+        this.dataProvider.getFrostDates(lat, lng),
+        this.dataProvider.getHardinessZone(lat, lng),
+        this.dataProvider.getRainfallData(lat, lng),
+        this.dataProvider.getSoilData(lat, lng),
+        this.dataProvider.getRecommendedCrops(lat, lng)
       ]);
       this.updateDisplay(frostDates, hardiness, rainfall, soilData, crops);
     } catch (error) {
@@ -52,27 +63,6 @@ class GardenZoneWidget extends HTMLElement {
       this.showError();
     }
   }
-
-  // async loadApiGardeningData() {
-  //   const lat = this.getAttribute('latitude');
-  //   const lng = this.getAttribute('longitude');
-
-  //   try {
-  //     // Load data from various APIs
-  //     const [frostDates, hardiness, rainfall, soilData, crops] = await Promise.all([
-  //       this.getFrostDates(lat, lng),
-  //       this.getHardinessZone(lat, lng),
-  //       this.getRainfallData(lat, lng),
-  //       this.getSoilData(lat, lng),
-  //       this.getRecommendedCrops(lat, lng)
-  //     ]);
-
-  //     this.updateDisplay(frostDates, hardiness, rainfall, soilData, crops);
-  //   } catch (error) {
-  //     console.error('Error loading gardening data:', error);
-  //     this.showError();
-  //   }
-  // }
 
   render() {
     const styles = `
@@ -539,6 +529,21 @@ class GardenZoneWidget extends HTMLElement {
       </div>
     `;
   }
+
+  // Static method to register with a specific provider
+  static register(dataProvider?: GardenDataProvider) {
+    // Check if element is already registered
+    if (!customElements.get('garden-zone-widget')) {
+      customElements.define('garden-zone-widget', 
+        class extends GardenZoneWidget {
+          constructor() {
+            super(dataProvider);
+          }
+        }
+      );
+    }
+  }
 }
 
-customElements.define('garden-zone-widget', GardenZoneWidget);
+// Don't register by default - let main.ts handle it
+export default GardenZoneWidget;
