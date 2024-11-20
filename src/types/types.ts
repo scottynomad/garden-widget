@@ -19,6 +19,17 @@ export interface RainfallData {
   source: string;
 }
 
+export interface MonthlyAverages {
+  monthly_averages: {
+    [month: string]: {
+      average_temp_c: number;
+      average_precipitation_mm: number;
+      average_sunshine_mins: number;
+    }
+  }
+}
+
+
 export interface SoilData {
   classification: string;
   description: string;
