@@ -1,6 +1,15 @@
-import { FrostDates, HardinessZone, RainfallData, SoilData, CropData, MonthlyAverages } from '../types/types';
+import { FrostDates, HardinessZone, RainfallData, SoilData, CropData } from '../types/types';
 import MockGardenDataService from '../components/mock/mock-garden-data';
 
+interface MonthlyAverages {
+  monthly_averages: {
+    [month: string]: {
+      average_temp_c: number;
+      average_precipitation_mm: number;
+      average_sunshine_mins: number;
+    }
+  }
+}
 
 interface SoilType {
   map_unit_symbol: string;

@@ -1,4 +1,4 @@
-import { FrostDates, HardinessZone, RainfallData, SoilData, CropData, MonthlyAverages } from '../../types/types';
+import { FrostDates, HardinessZone, RainfallData, SoilData, CropData } from '../../types/types';
 
 // Helper function to simulate API latency
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -25,39 +25,6 @@ class MockGardenDataService {
     },
     // Add more regions as needed
   };
-
-  private static readonly MONTHLY_CLIMATE_DATA: Record<string, {
-    temps_c: number[];      // Average temperatures in Celsius
-    precip_mm: number[];    // Precipitation in millimeters
-    sunshine_mins: number[]; // Average daily sunshine in minutes
-  }> = {
-    '25,-80': { // Miami
-      temps_c: [20, 21, 22, 24, 26, 27, 28, 28, 28, 26, 23, 21],
-      precip_mm: [55, 53, 66, 86, 140, 216, 165, 208, 213, 160, 86, 56],
-      sunshine_mins: [440, 450, 480, 510, 540, 510, 510, 480, 450, 420, 390, 420]
-    },
-    '40,-74': { // New York
-      temps_c: [0, 2, 6, 12, 17, 22, 25, 24, 20, 14, 9, 3],
-      precip_mm: [91, 76, 102, 104, 102, 97, 117, 104, 94, 89, 86, 89],
-      sunshine_mins: [300, 330, 360, 420, 480, 510, 510, 480, 420, 360, 300, 270]
-    },
-    '34,-118': { // Los Angeles
-      temps_c: [15, 16, 17, 18, 19, 21, 23, 24, 23, 21, 18, 15],
-      precip_mm: [79, 97, 64, 23, 8, 3, 0, 3, 5, 10, 30, 58],
-      sunshine_mins: [420, 450, 480, 510, 510, 540, 600, 570, 510, 480, 420, 390]
-    },
-    '47,-122': { // Seattle
-      temps_c: [5, 6, 8, 11, 14, 17, 19, 19, 17, 12, 8, 5],
-      precip_mm: [142, 89, 94, 69, 51, 38, 18, 23, 41, 89, 155, 142],
-      sunshine_mins: [240, 270, 330, 390, 450, 480, 540, 510, 420, 300, 210, 210]
-    },
-    '41,-87': { // Chicago
-      temps_c: [-3, -1, 4, 10, 16, 22, 24, 23, 19, 12, 6, -1],
-      precip_mm: [46, 46, 64, 86, 94, 97, 94, 89, 84, 69, 71, 56],
-      sunshine_mins: [270, 300, 330, 390, 450, 480, 510, 480, 420, 360, 270, 240]
-    }
-  };
-
   private static getClosestCoordinate(lat: number, lng: number): string {
     // Calculate closest coordinate using Euclidean distance
     const coordinates = Object.keys(this.HARDINESS_ZONES);
@@ -230,39 +197,6 @@ class MockGardenDataService {
     return {
       crops,
       source: 'https://extension.org/'
-    };
-  }
-
-  static async getMonthlyAverages(lat: number, lng: number): Promise<MonthlyAverages> {
-    await delay(800);
-
-    const months = [
-      'january', 'february', 'march', 'april', 'may', 'june',
-      'july', 'august', 'september', 'october', 'november', 'december'
-    ];
-
-    const coordinate = this.getClosestCoordinate(lat, lng);
-    const climateData = this.MONTHLY_CLIMATE_DATA[coordinate] || this.MONTHLY_CLIMATE_DATA['40,-74']; // Default to NYC
-
-    const monthly_averages: Record<string, {
-      average_temp_c: number;
-      average_precipitation_mm: number;
-      average_sunshine_mins: number;
-    }> = {};
-
-    months.forEach((month, index) => {
-      // Add some random variation (±10%) to make it more realistic
-      const variation = () => 0.9 + Math.random() * 0.2;
-
-      monthly_averages[month] = {
-        average_temp_c: +(climateData.temps_c[index] * variation()).toFixed(1),
-        average_precipitation_mm: +(climateData.precip_mm[index] * variation()).toFixed(1),
-        average_sunshine_mins: Math.round(climateData.sunshine_mins[index] * variation())
-      };
-    });
-
-    return {
-      monthly_averages
     };
   }
 }
