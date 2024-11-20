@@ -1,4 +1,4 @@
-import { FrostDates, HardinessZone, RainfallData, SoilData, CropData } from '../../types/types';
+import { FrostDates, HardinessZone, RainfallData, SoilData, CropData } from './types';
 
 // Helper function to simulate API latency
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

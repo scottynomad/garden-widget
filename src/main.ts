@@ -1,12 +1,4 @@
-import GardenZoneWidget from './components/garden-zone-widget';
-import GardenDataService from './services/GardenDataService';
-
-// Configure widget based on environment variable
-if (import.meta.env.PROD || import.meta.env.VITE_USE_REAL_API === 'true') {
-  GardenZoneWidget.register(GardenDataService);
-} else {
-  GardenZoneWidget.register();
-}
+import './components/garden-zone-widget';
 
 // Add click handlers for the location preset buttons
 document.querySelectorAll('.location-preset').forEach(button => {
